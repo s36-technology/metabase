@@ -1,5 +1,5 @@
 import { PLUGIN_CONTENT_TRANSLATION } from "metabase/plugins";
-import { hasPremiumFeature } from "metabase-enterprise/settings";
+//import { hasPremiumFeature } from "metabase-enterprise/settings";
 
 import { ContentTranslationConfiguration } from "./components";
 import { contentTranslationEndpoints } from "./constants";
@@ -11,7 +11,7 @@ import {
   useTranslateSeries,
 } from "./utils";
 
-if (hasPremiumFeature("content_translation")) {
+//if (hasPremiumFeature("content_translation")) {
   Object.assign(PLUGIN_CONTENT_TRANSLATION, {
     isEnabled: true,
     useSortByContentTranslation,
@@ -24,4 +24,4 @@ if (hasPremiumFeature("content_translation")) {
     translateDisplayNames,
     ContentTranslationConfiguration,
   });
-}
+//}
