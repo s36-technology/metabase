@@ -14,8 +14,8 @@ RUN apk add -U bash fontconfig curl font-noto font-noto-arabic font-noto-hebrew 
     mkdir -p /plugins && chmod a+rwx /plugins
 
 # add Metabase script and uberjar
-COPY target/uberjar/metabase.jar /app/
 COPY bin/docker/run_metabase.sh /app/
+COPY target/uberjar/metabase.jar /app/
 
 # expose our default runtime port
 EXPOSE 3000
