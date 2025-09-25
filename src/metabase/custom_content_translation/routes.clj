@@ -1,4 +1,4 @@
-(ns metabase-enterprise.content-translation.routes
+(ns metabase.custom-content-translation.routes
   "Endpoints relating to the translation of user-generated content"
   (:require
    [clojure.data.csv :as csv]
