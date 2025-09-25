@@ -3,7 +3,6 @@
   (:require
    [clojure.data.csv :as csv]
    [clojure.string :as str]
-   [metabase-enterprise.api.routes.common :as ee.api.common]
    [metabase.custom-content-translation.dictionary :as dictionary]
    [metabase.api.common :as api]
    [metabase.api.macros :as api.macros]
