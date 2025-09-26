@@ -8,4 +8,4 @@
 
 (def ^{:arglists '([request respond raise])} custom-content-translation-routes
   "`/api/custom-content-translation` routes"
-  (api.macros/ns-handler 'metabase.custom-content-translation.api.dictionary))
+  (api.macros/ns-handler metabase.custom-content-translation.api.dictionary))
