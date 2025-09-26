@@ -1,4 +1,4 @@
-(ns metabase.custom-content-translation.api.dictionary
+(ns metabase.custom-content-translation.api
   (:require [metabase.api.common :as api]
             [metabase.api.macros :as api.macros]
             [clojure.data.csv :as csv]
@@ -50,7 +50,6 @@
   (if locale
     {:data (ct/get-translations (i18n/normalized-locale-string (str/trim locale)))}
     (throw (ex-info (str (i18n/tru "Locale is required.")) {:status-code 400}))))
-
 
 (def ^{:arglists '([request respond raise])} custom-content-translation-routes
   "`/api/custom-content-translation` routes."
