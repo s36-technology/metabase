@@ -7,6 +7,7 @@
    [metabase.custom-content-translation.core :as dictionary.core]
    [metabase.content-translation.models :as ct]
    [metabase.api.common :as api]
+   [metabase.embedding.jwt :as embedding.jwt]
    [metabase.api.macros :as api.macros]
    [metabase.util.i18n :refer [tru]]))
 
