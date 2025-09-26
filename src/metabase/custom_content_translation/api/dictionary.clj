@@ -1,5 +1,6 @@
 (ns metabase.custom-content-translation.api.dictionary
   (:require [metabase.api.common :as api]
+            [metabase.api.macros :as api.macros]
             [clojure.data.csv :as csv]
             [clojure.string :as str]
             [metabase.content-translation.models :as ct]
