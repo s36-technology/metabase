@@ -1,9 +1,9 @@
-(ns metabase.custom-content-translation.routes
+(ns metabase.custom-content-translation.api.dictionary
   "Endpoints relating to the translation of user-generated content"
   (:require
    [clojure.data.csv :as csv]
    [clojure.string :as str]
-   [metabase.custom-content-translation.dictionary :as dictionary]
+   [metabase.custom-content-translation.core :as dictionary.core]
    [metabase.api.common :as api]
    [metabase.api.macros :as api.macros]
    [metabase.content-translation.models :as ct]
@@ -43,8 +43,7 @@
      :body (with-out-str
              (csv/write-csv *out* csv-data))}))
 
-(api.macros/defendpoint :post
-  "/upload-dictionary"
+(api.macros/defendpoint :post "/upload-dictionary"
   "Upload a CSV of content translations"
   {:multipart true}
   [_route_params
@@ -65,7 +64,7 @@
                       {:status-code http-status-content-too-large})))
     (when-not (instance? java.io.File file)
       (throw (ex-info (tru "No file provided") {:status-code 400})))
-    (dictionary/read-and-import-csv! file)
+    (dictionary.core/read-and-import-csv! file)
     {:success true}))
 
 (api.macros/defendpoint :get "/dictionary/:token"
@@ -78,7 +77,3 @@
   (if locale
     {:data (ct/get-translations (i18n/normalized-locale-string (str/trim locale)))}
     (throw (ex-info (str (tru "Locale is required.")) {:status-code 400}))))
-
-(def ^{:arglists '([request respond raise])} routes
-  "`/api/custom-content-translation` routes."
-  (api.macros/ns-handler *ns*))

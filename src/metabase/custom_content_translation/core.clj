@@ -1,4 +1,4 @@
-(ns metabase.custom-content-translation.dictionary
+(ns metabase.custom-content-translation.core
   "Implementation of dictionary upload and retrieval logic for content translations"
   (:require
    [clojure.data.csv :as csv]
