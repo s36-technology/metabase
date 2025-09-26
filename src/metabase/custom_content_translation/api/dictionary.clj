@@ -32,15 +32,18 @@
 
 (api.macros/defendpoint :post "/upload-dictionary"
   "Upload a CSV of content translations"
-  [:as {{:keys [file]} :multipart-params}]
+  [request]
   (api/check-superuser)
-  (when (> (:size file) constants/max-content-translation-dictionary-size-bytes)
-    (throw (ex-info (tru "The dictionary should be less than {0}MB." constants/max-content-translation-dictionary-size-mib)
-                    {:status-code constants/http-status-content-too-large})))
-  (when-not (instance? java.io.File (:tempfile file))
-    (throw (ex-info (tru "No file provided") {:status-code 400})))
-  (dictionary.core/read-and-import-csv! (:tempfile file))
-  {:success true})
+  (let [{{:keys [file]} :multipart-params} request
+        file-size (:size file)
+        tempfile (:tempfile file)]
+    (when (> file-size constants/max-content-translation-dictionary-size-bytes)
+      (throw (ex-info (tru "The dictionary should be less than {0}MB." constants/max-content-translation-dictionary-size-mib)
+                      {:status-code constants/http-status-content-too-large})))
+    (when-not (instance? java.io.File tempfile)
+      (throw (ex-info (tru "No file provided") {:status-code 400})))
+    (dictionary.core/read-and-import-csv! tempfile)
+    {:success true}))
 
 (api.macros/defendpoint :get "/dictionary/:token"
   "Fetch the content translation dictionary via a JSON Web Token signed with the `embedding-secret-key`."
