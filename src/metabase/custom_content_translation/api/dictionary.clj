@@ -5,7 +5,7 @@
    [clojure.string :as str]
    [metabase.custom-content-translation.constants :as constants]
    [metabase.custom-content-translation.core :as dictionary.core]
-   [metabase.custom-content-translation.models :as ct]
+   [metabase.content-translation.models :as ct]
    [metabase.api.common :as api]
    [metabase.api.macros :as api.macros]
    [metabase.util.i18n :refer [tru]]))
