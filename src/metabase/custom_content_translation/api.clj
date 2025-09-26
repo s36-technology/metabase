@@ -9,6 +9,8 @@
             [metabase.util.i18n :as i18n]
             [metabase.embedding.jwt :as embedding.jwt]))
 
+(comment metabase.custom-content-translation.api/keep-me)
+
 (api.macros/defendpoint :get "/csv"
   "Provides content translation dictionary in CSV"
   []
