@@ -3,27 +3,14 @@
   (:require
    [clojure.data.csv :as csv]
    [clojure.string :as str]
+   [metabase.custom-content-translation.constants :as constants]
    [metabase.custom-content-translation.core :as dictionary.core]
+   [metabase.custom-content-translation.models :as ct]
    [metabase.api.common :as api]
    [metabase.api.macros :as api.macros]
-   [metabase.content-translation.models :as ct]
-   [metabase.embedding.jwt :as embedding.jwt]
-   [metabase.util.i18n :as i18n :refer [deferred-tru tru]]
-   [metabase.util.malli.schema :as ms]))
+   [metabase.util.i18n :refer [tru]]))
 
 (set! *warn-on-reflection* true)
-
-(def ^:private http-status-content-too-large 413)
-
-;; The maximum size of a content translation dictionary is 1.5MiB
-;; This should equal the maxContentDictionarySizeInMiB variable in the frontend
-(def ^:private max-content-translation-dictionary-size-mib 1.5)
-(def ^:private max-content-translation-dictionary-size-bytes (* max-content-translation-dictionary-size-mib 1024 1024))
-
-(def ^:private sample-translations [{:locale "de" :msgid "Sample translation" :msgstr "Musterübersetzung"}
-                                    {:locale "pt_BR" :msgid "Sample translation" :msgstr "Tradução de exemplo"}
-                                    {:locale "ja" :msgid "Sample translation" :msgstr "サンプル翻訳"}
-                                    {:locale "ko" :msgid "Sample translation" :msgstr "샘플 번역"}])
 
 (api.macros/defendpoint :get "/csv"
   "Provides content translation dictionary in CSV"
@@ -31,7 +18,7 @@
   (api/check-superuser)
   (let [translations (ct/get-translations)
         translations (if (empty? translations)
-                       sample-translations
+                       constants/sample-translations
                        translations)
         csv-data (cons ["Locale Code" "String" "Translation"]
                        (map (fn [{:keys [locale msgid msgstr]}]
@@ -45,27 +32,15 @@
 
 (api.macros/defendpoint :post "/upload-dictionary"
   "Upload a CSV of content translations"
-  {:multipart true}
-  [_route_params
-   _query-params
-   _body
-   {:keys [multipart-params], :as _request} :- [:map
-                                                [:multipart-params
-                                                 [:map
-                                                  ["file"
-                                                   [:map
-                                                    [:filename :string]
-                                                    [:tempfile (ms/InstanceOfClass java.io.File)]]]]]]]
-
+  [:as {{:keys [file]} :multipart-params}]
   (api/check-superuser)
-  (let [file (get-in multipart-params ["file" :tempfile])]
-    (when (> (get-in multipart-params ["file" :size]) max-content-translation-dictionary-size-bytes)
-      (throw (ex-info (tru "The dictionary should be less than {0}MB." max-content-translation-dictionary-size-mib)
-                      {:status-code http-status-content-too-large})))
-    (when-not (instance? java.io.File file)
-      (throw (ex-info (tru "No file provided") {:status-code 400})))
-    (dictionary.core/read-and-import-csv! file)
-    {:success true}))
+  (when (> (:size file) constants/max-content-translation-dictionary-size-bytes)
+    (throw (ex-info (tru "The dictionary should be less than {0}MB." constants/max-content-translation-dictionary-size-mib)
+                    {:status-code constants/http-status-content-too-large})))
+  (when-not (instance? java.io.File (:tempfile file))
+    (throw (ex-info (tru "No file provided") {:status-code 400})))
+  (dictionary.core/read-and-import-csv! (:tempfile file))
+  {:success true})
 
 (api.macros/defendpoint :get "/dictionary/:token"
   "Fetch the content translation dictionary via a JSON Web Token signed with the `embedding-secret-key`."

@@ -1,11 +1,11 @@
 (ns metabase.custom-content-translation.api
   (:require
-   [compojure.core :refer [defroutes GET POST]]
    [metabase.api.common :as api]
-   [metabase.custom-content-translation.api.dictionary :as dictionary]))
+   [metabase.api.macros :as api.macros]
+   [metabase.custom-content-translation.api.dictionary]))
 
-(defroutes custom-content-translation-routes
+(comment metabase.custom-content-translation.api.dictionary/keep-me)
+
+(def ^{:arglists '([request respond raise])} custom-content-translation-routes
   "`/api/custom-content-translation` routes"
-  (GET "/csv" [] (dictionary/get-csv))
-  (POST "/upload-dictionary" [:as {{:keys [file]} :multipart-params}] (dictionary/post-upload-dictionary))
-  (GET "/dictionary/:token" [] (dictionary/get-dictionary)))
+  (api.macros/ns-handler 'metabase.custom-content-translation.api.dictionary))
