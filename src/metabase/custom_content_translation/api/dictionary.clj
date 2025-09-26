@@ -1,13 +1,12 @@
 (ns metabase.custom-content-translation.api.dictionary
   (:require [metabase.api.common :as api]
-            [metabase.util.csv :as csv]
+            [clojure.data.csv :as csv]
             [clojure.string :as str]
             [metabase.custom-content-translation.core :as ct]
             [metabase.custom-content-translation.constants :as constants]
             [metabase.custom-content-translation.dictionary :as dictionary]
             [metabase.util.i18n :as i18n]
-            [metabase.util.embedding.jwt :as embedding.jwt]
-            [clojure.java.io :as io]))
+            [metabase.util.embedding.jwt :as embedding.jwt]))
 
 (api.macros/defendpoint :get "/csv"
   "Provides content translation dictionary in CSV"
