@@ -6,7 +6,7 @@
             [metabase.custom-content-translation.constants :as constants]
             [metabase.custom-content-translation.core :as dictionary]
             [metabase.util.i18n :as i18n]
-            [metabase.util.embedding.jwt :as embedding.jwt]))
+            [metabase.embedding.jwt :as embedding.jwt]))
 
 (api.macros/defendpoint :get "/csv"
   "Provides content translation dictionary in CSV"
