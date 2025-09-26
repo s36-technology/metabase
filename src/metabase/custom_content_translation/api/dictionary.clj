@@ -9,7 +9,7 @@
    [metabase.api.common :as api]
    [metabase.embedding.jwt :as embedding.jwt]
    [metabase.api.macros :as api.macros]
-   [metabase.util.i18n :refer [tru]]))
+   [metabase.util.i18n :as i18n :refer [deferred-tru tru]]))
 
 (set! *warn-on-reflection* true)
 
