@@ -186,7 +186,7 @@
    "/user"                 (+auth 'metabase.users.api)
    "/user-key-value"       (+auth 'metabase.user-key-value.api)
    "/util"                 'metabase.api.util
-   "/custom-content-translation"       (+message-only-exceptions metabase.custom-content-translation.api/custom-content-translation-routes :content-translation)})
+   "/custom-content-translation"       (+message-only-exceptions metabase.custom-content-translation.api/custom-content-translation-routes)})
 ;;; ↑↑↑ KEEP THIS SORTED OR ELSE ↑↑↑
 
 ;;; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
