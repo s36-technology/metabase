@@ -7,7 +7,8 @@
             [metabase.custom-content-translation.constants :as constants]
             [metabase.custom-content-translation.core :as dictionary]
             [metabase.util.i18n :as i18n]
-            [metabase.embedding.jwt :as embedding.jwt]))
+            [metabase.embedding.jwt :as embedding.jwt]
+            [metabase.util.malli.schema :as ms]))
 
 (comment metabase.custom-content-translation.api/keep-me)
 
