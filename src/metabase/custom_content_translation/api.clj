@@ -3,7 +3,7 @@
             [metabase.api.macros :as api.macros]
             [clojure.data.csv :as csv]
             [clojure.string :as str]
-            [metabase.content-translation.models :as ct]
+            [metabase.custom-content-translation.models :as ct]
             [metabase.custom-content-translation.constants :as constants]
             [metabase.custom-content-translation.core :as dictionary]
             [metabase.util.i18n :as i18n]
