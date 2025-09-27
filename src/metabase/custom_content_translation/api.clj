@@ -29,18 +29,29 @@
      :body (with-out-str
              (csv/write-csv *out* csv-data))}))
 
-(api.macros/defendpoint :post "/upload-dictionary"
+(api.macros/defendpoint :post
+  "/upload-dictionary"
   "Upload a CSV of content translations"
-  [{{:strs [file]} :multipart-params}]
+  {:multipart true}
+  [_route_params
+   _query-params
+   _body
+   {:keys [multipart-params], :as _request} :- [:map
+                                                [:multipart-params
+                                                 [:map
+                                                  ["file"
+                                                   [:map
+                                                    [:filename :string]
+                                                    [:tempfile (ms/InstanceOfClass java.io.File)]]]]]]]
+
   (api/check-superuser)
-  (let [file-size (:size file)
-        tempfile  (:tempfile file)]
-    (when (> file-size constants/max-content-translation-dictionary-size-bytes)
-      (throw (ex-info (i18n/tru "The dictionary should be less than {0}MB." constants/max-content-translation-dictionary-size-mib)
+  (let [file (get-in multipart-params ["file" :tempfile])]
+    (when (> (get-in multipart-params ["file" :size]) constants/max-content-translation-dictionary-size-bytes)
+      (throw (ex-info (tru "The dictionary should be less than {0}MB." constants/max-content-translation-dictionary-size-mib)
                       {:status-code constants/http-status-content-too-large})))
-    (when-not (instance? java.io.File tempfile)
-      (throw (ex-info (i18n/tru "No file provided") {:status-code 400})))
-    (dictionary/read-and-import-csv! tempfile)
+    (when-not (instance? java.io.File file)
+      (throw (ex-info (tru "No file provided") {:status-code 400})))
+    (dictionary/read-and-import-csv! file)
     {:success true}))
 
 (api.macros/defendpoint :get "/dictionary/:token"
