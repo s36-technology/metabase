@@ -48,10 +48,10 @@
   (api/check-superuser)
   (let [file (get-in multipart-params ["file" :tempfile])]
     (when (> (get-in multipart-params ["file" :size]) constants/max-content-translation-dictionary-size-bytes)
-      (throw (ex-info (tru "The dictionary should be less than {0}MB." constants/max-content-translation-dictionary-size-mib)
+      (throw (ex-info (i18n/tru "The dictionary should be less than {0}MB." constants/max-content-translation-dictionary-size-mib)
                       {:status-code constants/http-status-content-too-large})))
     (when-not (instance? java.io.File file)
-      (throw (ex-info (tru "No file provided") {:status-code 400})))
+      (throw (ex-info (i18n/tru "No file provided") {:status-code 400})))
     (dictionary/read-and-import-csv! file)
     {:success true}))
 
