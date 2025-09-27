@@ -1,4 +1,4 @@
-(ns metabase.custom.content-translation.models
+(ns metabase.custom-content-translation.models
   "A model representing dictionary entries for translations."
   (:require
    [metabase.util.i18n :refer [tru]]
